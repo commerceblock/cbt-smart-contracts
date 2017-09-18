@@ -9,7 +9,7 @@ contract Fund is Ownable {
 
     CBToken public tokenFund;
 
-    uint public totalSupply = 1000000000; // 400 million ;
+    uint public totalSupply = 1000000000; // 1 billion ;
     uint public tokensIssued = 0;
 
 
@@ -17,20 +17,18 @@ contract Fund is Ownable {
     uint public partnersTokens = 300000000; // 300 million ;
     address private remaining;
 
-    // timestamps for token sale
-    uint public startTime;
-    uint public endTime;
-
     event TokenPurchase(address indexed purchaser, uint256 amount , uint256 remainingTokens);
 
     bool public isFinalized = false;
-    bool public isStarted = false;
+    bool public isInProgress = false;
 
 
     event Finalized();
     event Started();
+    event Ended();
 
-    function issueTokens(address _for, uint tokenCount) onlyOwner
+
+    function issueTokens(address _for, uint tokenCount) external onlyOwner
     returns (bool)
     {
         require(inProgress());
@@ -61,7 +59,7 @@ contract Fund is Ownable {
 
     // @return true if crowdsale event has ended
     function inProgress() public constant returns (bool) {
-        return isStarted && (now < endTime) && (tokensIssued < totalSupply);
+        return isInProgress && (tokensIssued < totalSupply);
     }
 
 
@@ -69,7 +67,7 @@ contract Fund is Ownable {
      * @dev Must be called after crowdsale ends, to do some extra finalization
      * work. Calls the contract's finalization function.
      */
-    function finalize() onlyOwner {
+    function finalize() external onlyOwner {
         require(!isFinalized);
         require(!inProgress());
 
@@ -79,16 +77,19 @@ contract Fund is Ownable {
         isFinalized = true;
     }
 
-    function start(uint _endTime) onlyOwner {
-        require(!isStarted);
+    function start() external onlyOwner {
+        require(!isInProgress);
         require(!isFinalized);
-
-        require(_endTime > now);
-        startTime = now;
-        endTime = _endTime;
         Started();
 
-        isStarted = true;
+        isInProgress = true;
+    }
+    function end() external onlyOwner {
+        require(isInProgress);
+        require(!isFinalized);
+        Ended();
+
+        isInProgress = false;
     }
 
     /**
@@ -98,6 +99,7 @@ contract Fund is Ownable {
      */
     function finalization() internal {
         tokenFund.mint(remaining,totalSupply - tokensIssued);
+        tokenFund.finishMinting();
         tokenFund.transferOwnership(owner);
     }
 
