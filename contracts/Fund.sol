@@ -7,7 +7,7 @@ import './MintableToken.sol';
 
 contract Fund is Ownable {
 
-    CBToken public tokenFund;
+    CBToken public ERC20CBT;
 
     uint public totalSupply = 1000000000; // 1 billion ;
     uint public tokensIssued = 0;
@@ -32,13 +32,9 @@ contract Fund is Ownable {
     returns (bool)
     {
         require(inProgress());
-        if (tokenCount == 0) {
-            return false;
-        }
-        if(!validPurchase(tokenCount)) {
-            return false;
-        }
-        tokenFund.mint(_for,tokenCount);
+        require(validPurchase(tokenCount));
+
+        ERC20CBT.mint(_for,tokenCount);
          tokensIssued += tokenCount;
         TokenPurchase(_for,tokenCount,totalSupply-tokensIssued);
          return true;
@@ -46,13 +42,13 @@ contract Fund is Ownable {
 
     function Fund( address company , address partners ,address _remaining) {
 
-        tokenFund = new CBToken();
+        ERC20CBT = new CBToken();
         remaining = _remaining;
 
-        tokenFund.mint(company,companyTokens);
+        ERC20CBT.mint(company,companyTokens);
         tokensIssued += companyTokens;
 
-        tokenFund.mint(partners,partnersTokens);
+        ERC20CBT.mint(partners,partnersTokens);
         tokensIssued += partnersTokens;
 
     }
@@ -98,13 +94,13 @@ contract Fund is Ownable {
      * executed entirely.
      */
     function finalization() internal {
-        tokenFund.mint(remaining,totalSupply - tokensIssued);
-        tokenFund.finishMinting();
-        tokenFund.transferOwnership(owner);
+        ERC20CBT.mint(remaining,totalSupply - tokensIssued);
+        ERC20CBT.finishMinting();
+        ERC20CBT.transferOwnership(owner);
     }
 
     function validPurchase(uint tokenCount) internal constant returns (bool) {
-        return (tokensIssued + tokenCount <= totalSupply);
+        return (tokenCount > 0) && (tokensIssued + tokenCount <= totalSupply);
     }
 
 }

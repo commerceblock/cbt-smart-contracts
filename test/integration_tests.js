@@ -1,15 +1,14 @@
 
 var gasAmount = 2000000;
 
-var TokenFund = artifacts.require("./CBToken.sol");
+var CBToken = artifacts.require("./CBToken.sol");
 var Fund = artifacts.require("./Fund.sol");
 
 
 // Test investments
-contract('TokenFund', function (accounts) {
+contract('CBToken fund integration test', function (accounts) {
     // Owner of the contract
     var owner = accounts[0];
-    // Regular TokenFund ethInvestor
     var company = accounts[1];
     var partners = accounts[2];
     var remaining = accounts[3];
@@ -18,14 +17,14 @@ contract('TokenFund', function (accounts) {
 
     //test contract creation
     it("check contract creation", function (done) {
-        // TokenFund Contract
+        // CBToken Contract
 
 
         Fund.deployed().then(function (instance) {
             contract = instance;
-            return contract.tokenFund();
+            return contract.ERC20CBT();
         }).then(function (address) {
-            token = web3.eth.contract(TokenFund.abi).at(address);
+            token = web3.eth.contract(CBToken.abi).at(address);
             return token.balanceOf.call(company);
         }).then(function (balance) {
             // make sure that company account have 300 million tokens
@@ -52,72 +51,93 @@ contract('TokenFund', function (accounts) {
 
 
     //test sale 
-    it("start sale", function (done) {
-        // TokenFund Contract
+    it("start sale", async function () {
 
-        contract.start().then(function () {
-            return contract.isInProgress();
-        }).then(function (isInProgress) {
-            // sale start
-            assert.equal(isInProgress, true, "not inprogress");
-            return token.totalSupply();
-        }).then(function (issuedTokens) {
-            assert.equal(issuedTokens, 600000000, "not 600 M");
-            return contract.issueTokens(accounts[4], 2000000);
-        }).then(function () {
-            return token.totalSupply();
-        }).then(function (issuedTokens) {
-            assert.equal(issuedTokens.toNumber(), 602000000, "not 602 M");
-            return token.balanceOf(accounts[4]);
-        }).then(function (balanceOf4) {
-            assert.equal(balanceOf4.toNumber(), 2000000, "not 2 M");
+        try {
+            await contract.start({ from: accounts[1] })
+            assert.fail('should have thrown before');
+        } catch (error) {
 
-            return contract.issueTokens(accounts[5], 32010120);
-        }).then(function () {
-            return token.totalSupply();
-        }).then(function (issuedTokens) {
-            assert.equal(issuedTokens.toNumber(), 634010120, "not corect amount");
-            return token.balanceOf(accounts[5]);
-        }).then(function (balanceOf5) {
-            assert.equal(balanceOf5.toNumber(), 32010120, "not 2 M");
-            return contract.issueTokens(accounts[6], 84563215);
-        }).then(function () {
-            return token.totalSupply();
-        }).then(function (issuedTokens) {
-            assert.equal(issuedTokens.toNumber(), 718573335, "not corect amount");
-            return token.balanceOf(accounts[6]);
-        }).then(function (balanceOf6) {
-            assert.equal(balanceOf6.toNumber(), 84563215, "not corect amount");
-            return contract.issueTokens(accounts[4], 18750321);
-        }).then(function () {
-            return token.totalSupply();
-        }).then(function (issuedTokens) {
-            assert.equal(issuedTokens.toNumber(), 737323656, "not corect amount");
-            return token.balanceOf(accounts[4]);
-        }).then(function (balanceOf4) {
-            assert.equal(balanceOf4.toNumber(), 20750321, "not corect amount");
-            return contract.issueTokens(accounts[5], 640000);
-        }).then(function () {
-            return token.totalSupply();
-        }).then(function (issuedTokens) {
-            assert.equal(issuedTokens.toNumber(), 737963656, "not corect amount");
-            return token.balanceOf(accounts[5]);
-        }).then(function (balanceOf5) {
-            assert.equal(balanceOf5.toNumber(), 32650120, "not corect amount");
-            return contract.issueTokens(accounts[6], 11111111);
-        }).then(function () {
-            return token.totalSupply();
-        }).then(function (issuedTokens) {
-            assert.equal(issuedTokens.toNumber(), 749074767, "not corect amount");
-            return token.balanceOf(accounts[6]);
-        }).then(function (balanceOf6) {
-            assert.equal(balanceOf6.toNumber(), 95674326, "not corect amount");
-            return;
-        }).then(done);
+            assert.isAbove(error.message.search('invalid opcode'), -1, 'Invalid opcode error must be returned');
+        }        
+        await contract.start({ from: accounts[0] })
+        var inprogress = await contract.isInProgress();
+        assert.equal(inprogress, true, "not inprogress");
+        
+        balanceOf4 = token.balanceOf(accounts[4]);
+        assert.equal(balanceOf4.toNumber(), 0, "not 2 M");
+
+        try {
+            await contract.issueTokens(accounts[4], 2000000, { from: accounts[3] })
+            assert.fail('should have thrown before');
+        } catch (error) {
+
+            assert.isAbove(error.message.search('invalid opcode'), -1, 'Invalid opcode error must be returned');
+        }
+
+        balanceOf4 = token.balanceOf(accounts[4]);
+        assert.equal(balanceOf4.toNumber(), 0, "not 2 M");
+
+        var issuedTokens = await  token.totalSupply();
+        assert.equal(issuedTokens, 600000000, "not 600 M");
+        
+        await contract.issueTokens(accounts[4], 2000000)
+        issuedTokens = await  token.totalSupply();
+        assert.equal(issuedTokens.toNumber(), 602000000, "not 602 M");
+        
+        balanceOf4 = token.balanceOf(accounts[4]);
+        assert.equal(balanceOf4.toNumber(), 2000000, "not 2 M");
+            
+        await contract.issueTokens(accounts[5], 32010120);
+        issuedTokens = await  token.totalSupply();
+        assert.equal(issuedTokens.toNumber(), 634010120, "not corect amount");
+        
+        var balanceOf5 = token.balanceOf(accounts[5]);
+        assert.equal(balanceOf5.toNumber(), 32010120, "not 2 M");
+
+        await contract.issueTokens(accounts[6], 84563215);
+        issuedTokens = await  token.totalSupply();
+        assert.equal(issuedTokens.toNumber(), 718573335, "not corect amount");
+        
+        var balanceOf6 = await token.balanceOf(accounts[6]);
+        assert.equal(balanceOf6.toNumber(), 84563215, "not corect amount");
+        
+        await contract.issueTokens(accounts[4], 18750321);
+        issuedTokens = await  token.totalSupply();
+        assert.equal(issuedTokens.toNumber(), 737323656, "not corect amount");
+        
+         balanceOf4 = token.balanceOf(accounts[4]);
+         assert.equal(balanceOf4.toNumber(), 20750321, "not corect amount");
+         
+        await contract.issueTokens(accounts[5], 640000);
+        issuedTokens = await  token.totalSupply();
+        assert.equal(issuedTokens.toNumber(), 737963656, "not corect amount");
+        
+         balanceOf5 = token.balanceOf(accounts[5]);
+         assert.equal(balanceOf5.toNumber(), 32650120, "not corect amount");
+         
+        await contract.issueTokens(accounts[6], 11111111);
+        issuedTokens = await  token.totalSupply();
+        assert.equal(issuedTokens.toNumber(), 749074767, "not corect amount");
+        
+         balanceOf6 = await token.balanceOf(accounts[6]);
+         assert.equal(balanceOf6.toNumber(), 95674326, "not corect amount");
+         
     });
 
     //end and finailizer 
     it("check end and finalize", async function () {
+        try {
+            await contract.end({ from: accounts[1] })
+            assert.fail('should have thrown before');
+        } catch (error) {
+
+            assert.isAbove(error.message.search('invalid opcode'), -1, 'Invalid opcode error must be returned');
+        }
+
+        var isInProgress = await contract.isInProgress();
+        assert.equal(isInProgress, true, "inprogress");
+
         await contract.end();
         try {
             await contract.issueTokens(accounts[6], 50000000);
@@ -132,10 +152,21 @@ contract('TokenFund', function (accounts) {
 
         var balanceOf6 = await token.balanceOf(accounts[6]);
         assert.equal(balanceOf6.toNumber(), 95674326, "not corect amount");
-        var isInProgress = await contract.isInProgress();
+        isInProgress = await contract.isInProgress();
         assert.equal(isInProgress, false, "inprogress");
 
         var isFinalized = await contract.isFinalized();
+        assert.equal(isFinalized, false, "isFinalized");
+
+        try {
+            await contract.end({ from: accounts[1] })
+            assert.fail('should have thrown before');
+        } catch (error) {
+
+            assert.isAbove(error.message.search('invalid opcode'), -1, 'Invalid opcode error must be returned');
+        }
+
+        isFinalized = await contract.isFinalized();
         assert.equal(isFinalized, false, "isFinalized");
 
         await contract.finalize();
@@ -157,7 +188,7 @@ contract('TokenFund', function (accounts) {
             token.transfer(accounts[7], 100000);
             assert.fail('should have thrown before');
         } catch (error) {
-            console.log(error.message);
+
             assert.isAbove(error.message.search('invalid address'), -1, 'Invalid address error must be returned');
         }
 
@@ -165,7 +196,7 @@ contract('TokenFund', function (accounts) {
             token.transfer(accounts[7], 100000, { from: accounts[0] });
             assert.fail('should have thrown before');
         } catch (error) {
-            console.log(error.message);
+
             assert.isAbove(error.message.search('invalid opcode'), -1, 'Invalid opcode error must be returned');
         }
 
@@ -198,7 +229,7 @@ contract('TokenFund', function (accounts) {
             token.transfer(accounts[7], 100000, { from: accounts[8] });
             assert.fail('should have thrown before');
         } catch (error) {
-            console.log(error.message);
+
             assert.isAbove(error.message.search('invalid opcode'), -1, 'Invalid opcode error must be returned');
         }
     });
@@ -211,7 +242,7 @@ contract('TokenFund', function (accounts) {
             token.transferFrom(accounts[7], accounts[8], 100000, { from: accounts[6] });
             assert.fail('should have thrown before');
         } catch (error) {
-            console.log(error.message);
+
             assert.isAbove(error.message.search('invalid opcode'), -1, 'Invalid opcode error must be returned');
         }
 
@@ -225,7 +256,7 @@ contract('TokenFund', function (accounts) {
             token.transferFrom(accounts[7], accounts[8], 10000001, { from: accounts[6] });
             assert.fail('should have thrown before');
         } catch (error) {
-            console.log(error.message);
+
             assert.isAbove(error.message.search('invalid opcode'), -1, 'Invalid opcodeerror must be returned');
         }
 
