@@ -1,4 +1,4 @@
-var fund = artifacts.require("./Fund.sol");
+//var fund = artifacts.require("./Fund.sol");
 var CBToken = artifacts.require("./CBToken.sol");
 var latestTime = web3.eth.getBlock('latest').timestamp;
 
@@ -15,7 +15,7 @@ module.exports = function(deployer, network) {
 		var partners = acc3;
 		var _remaining = acc4;
 
-        deployer.deploy(fund, company, partners, _remaining);
+        deployer.deploy(CBToken,company);
 
 
 //		 deployer.deploy(fund, company, partners, _remaining).then(function() {
