@@ -4,8 +4,10 @@ var CBToken = artifacts.require('../contracts/CBToken.sol');
 
 //based on zeppelin-solidity tests
 contract('CBToken', function(accounts) {
+
+  const company = accounts[1];
   let token;
-  var company = accounts[1];
+
   beforeEach(async function() {
     token = await CBToken.new(company);
   });
@@ -22,6 +24,5 @@ contract('CBToken', function(accounts) {
     let balance0 = await token.balanceOf(company);
     assert(balance0, 1000000000);
   })
-
 
 });
