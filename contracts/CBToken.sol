@@ -1,7 +1,6 @@
 pragma solidity ^0.4.11;
 
-//import './Ownable.sol';
-import './MintableToken.sol';
+import './StandardToken.sol';
 
 contract CBToken is StandardToken {
 
