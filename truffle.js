@@ -33,15 +33,14 @@ module.exports = {
     }
   },
   build: function(options, callback) {
-    var company =  options._[0].replace(/['']+/g, '');
-    var json = require('./build/contracts/CommerceBlockToken.json');
-    var contract = require('truffle-contract');
-    var CBToken = contract(json);
+    const company =  options._[0].replace(/['']+/g, '');
+    const json = require('./build/contracts/CommerceBlockToken.json');
+    const contract = require('truffle-contract');
+    const CBToken = contract(json);
 
-    var web3 = new Web3(new Web3.providers.HttpProvider('http://localhost:8545'));
-    var MyContract = web3.eth.contract(CBToken.abi);
-    var contractData = MyContract.new.getData(company, {data: CBToken.unlinked_binary});
-    var fs = require('fs');
+    const web3 = new Web3(new Web3.providers.HttpProvider('http://localhost:8545'));
+    const MyContract = web3.eth.contract(CBToken.abi);
+    const contractData = MyContract.new.getData(company, {data: CBToken.unlinked_binary});
     fs.writeFile('./byteCode', contractData);
    }
 };
