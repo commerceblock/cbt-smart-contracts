@@ -3,12 +3,15 @@ const CBToken = artifacts.require("./CommerceBlockToken.sol");
 
 module.exports = function(deployer, network) {
 
-	const acc1 = web3.eth.accounts[0];
-	const acc2 = web3.eth.accounts[1];
+
 
     if (network == 'development') {
-		const company = acc2;
+		const company = web3.eth.accounts[1];
         deployer.deploy(CBToken, company);
 	}
+
+	if (network == 'ropsten') {
+    	deployer.deploy(CBToken,"0x3A2Eb7a5B61699067C372AedAC5b684Ef2BC80Dc")
+    }
 
 };
