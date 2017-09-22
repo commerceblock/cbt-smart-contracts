@@ -1,0 +1,16 @@
+{
+  "name": "cbt-smart-contracts",
+  "version": "0.1.0",
+  "scripts": {
+    "testrpc": "testrpc",
+    "test": "truffle test"
+  },
+  "dependencies": {},
+  "devDependencies": {
+    "ethereumjs-testrpc": "git://github.com/commerceblock/testrpc.git#29c5115609b909b32774bbaa820c8744db50a74e",
+    "ethereumjs-wallet": "git://github.com/commerceblock/ethereumjs-wallet.git#5a597bdf47d4dbe2fa48197e129bd87774dcbb06",
+    "truffle": "git://github.com/commerceblock/truffle.git#cddc0107d052d8dcdd310476a96e913dfdc2642c",
+    "web3": "git://github.com/commerceblock/web3.js.git#ca1bd7d0cbef4407a153f16f4f1ae289f34f09da",
+    "web3-provider-engine": "git://github.com/commerceblock/provider-engine#7ea8b7c946e504af2b145b702b50caef557818dc"
+  }
+}

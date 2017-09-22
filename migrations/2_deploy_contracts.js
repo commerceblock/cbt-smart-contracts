@@ -1,12 +1,12 @@
 
+// imports
 const CBToken = artifacts.require("./CommerceBlockToken.sol");
+
 
 module.exports = function(deployer, network) {
 
-
-
     if (network == 'development') {
-		const company = web3.eth.accounts[1];
+        const company = web3.eth.accounts[1];
         deployer.deploy(CBToken, company);
 	}
 
