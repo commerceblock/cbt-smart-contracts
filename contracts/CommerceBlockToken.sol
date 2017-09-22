@@ -7,7 +7,7 @@ import './StandardToken.sol';
 /**
  * @title CommerceBlock ERC20 Token
  */
-contract CBToken is StandardToken {
+contract CommerceBlockToken is StandardToken {
 
     string public name = "CommerceBlock Token";
     string public symbol = "CBT";
@@ -16,7 +16,7 @@ contract CBToken is StandardToken {
     uint256 public supplyExponent = 9;
     uint256 public totalSupply = (10 ** supplyExponent) * (10 ** decimals);
 
-    function CBToken(address company) {
+    function CommerceBlockToken(address company) {
       balances[company] = totalSupply;
     }
 

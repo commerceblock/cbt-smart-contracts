@@ -3,20 +3,19 @@
 'use strict';
 
 const assertJump = require('./helpers/assertJump');
-var CBToken = artifacts.require('../contracts/CBToken.sol');
+const CBToken = artifacts.require('../contracts/CommerceBlockToken.sol');
 
 contract('StandardToken', function(accounts) {
 
   let token;
-  
+
   beforeEach(async function() {
     token = await CBToken.new(accounts[9]);
   });
-  
-  it('should return the correct totalSupply after construction', async function() {
-    let totalSupply = await token.totalSupply();
 
-    assert.equal(totalSupply.toNumber(), 1000000000);
+  it('should return the correct totalSupply after construction', async function() {
+    const totalSupply = await token.totalSupply();
+    assert.equal(totalSupply.toNumber(), (10 ** 9) * (10 ** 18));
   });
 
   it('should return the correct allowance amount after approval', async function() {
@@ -30,7 +29,7 @@ contract('StandardToken', function(accounts) {
   it('should return correct balances after transfer', async function() {
     let token = await CBToken.new(accounts[9]);
     await token.transfer(accounts[0], 100,{from : accounts[9]});
-    
+
     await token.transfer(accounts[1], 100);
     let balance0 = await token.balanceOf(accounts[0]);
     assert.equal(balance0, 0);
@@ -53,7 +52,7 @@ contract('StandardToken', function(accounts) {
   it('should return correct balances after transfering from another account', async function() {
     let token = await CBToken.new(accounts[9]);
     await token.transfer(accounts[0], 100,{from : accounts[9]});
-    
+
     await token.approve(accounts[1], 100);
     await token.transferFrom(accounts[0], accounts[2], 100, {from: accounts[1]});
 
@@ -79,7 +78,7 @@ contract('StandardToken', function(accounts) {
 
   describe('validating allowance updates to spender', function() {
     let preApproved;
-    
+
     it('should start with zero', async function() {
       preApproved = await token.allowance(accounts[0], accounts[1]);
       assert.equal(preApproved, 0);
@@ -92,7 +91,7 @@ contract('StandardToken', function(accounts) {
       await token.decreaseApproval(accounts[1], 10);
       let postDecrease = await token.allowance(accounts[0], accounts[1]);
       assert.equal(postIncrease - 10 ,postDecrease.toNumber() , "not correct" )
-      
+
     })
   });
 
