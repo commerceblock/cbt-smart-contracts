@@ -1,8 +1,7 @@
 
 const CBToken = artifacts.require('../contracts/CommerceBlockToken.sol');
 
-// Test investments
-contract('CBToken fund integration test', function (accounts) {
+contract('CBT integration tests', function (accounts) {
     // Owner of the contract
     var company = accounts[1];
     var token;
@@ -126,42 +125,37 @@ contract('CBToken fund integration test', function (accounts) {
     });
 
 
-    // // allowance
-    // it("check allowance", async function () {
+    // allowance
+    it("check allowance", async function () {
 
-    //     try {
-    //         await token.transferFrom(accounts[7], accounts[8], 100000, { from: accounts[6] });
-    //         assert.fail('should have thrown before');
-    //     } catch (error) {
+        try {
+          await token.transferFrom(accounts[7], accounts[8], 100000 * decimals, { from: accounts[6] });
+          assert.fail('should have thrown before');
+        } catch (error) {
+          assert.isAbove(error.message.search('invalid opcode'), -1, 'Invalid opcode error must be returned');
+        }
 
-    //         assert.isAbove(error.message.search('invalid opcode'), -1, 'Invalid opcode error must be returned');
-    //     }
+        await token.approve(accounts[6], 10000000 * decimals, { from: accounts[7] });
+        await token.approve(accounts[5], 10000000 * decimals, { from: accounts[7] });
 
+        try {
+          await token.transferFrom(accounts[7], accounts[8], 10000001 * decimals, { from: accounts[6] });
+          assert.fail('should have thrown before');
+        } catch (error) {
+          assert.isAbove(error.message.search('invalid opcode'), -1, 'Invalid opcodeerror must be returned');
+        }
 
+        token.transferFrom(accounts[7], accounts[8], 10000000 * decimals, { from: accounts[6] });
+        var balanceOf7 = await token.balanceOf(accounts[7]);
+        assert.equal(balanceOf7.toNumber(), 11000000 * decimals, "not corect amount");
+        var balanceOf8 = await token.balanceOf(accounts[8]);
+        assert.equal(balanceOf8.toNumber(), 10000000 * decimals, "not corect amount");
 
-    //     await token.approve(accounts[6], 10000000, { from: accounts[7] });
-    //     await token.approve(accounts[5], 10000000, { from: accounts[7] });
+        token.transferFrom(accounts[7], accounts[9], 3000000 * decimals, { from: accounts[5] });
+        balanceOf7 = await token.balanceOf(accounts[7]);
+        assert.equal(balanceOf7.toNumber(), 8000000 * decimals, "not corect amount");
+        var balanceOf9 = await token.balanceOf(accounts[9]);
+        assert.equal(balanceOf9.toNumber(), 3000000 * decimals, "not corect amount");
+    });
 
-
-    //     try {
-    //         await token.transferFrom(accounts[7], accounts[8], 10000001, { from: accounts[6] });
-    //         assert.fail('should have thrown before');
-    //     } catch (error) {
-
-    //         assert.isAbove(error.message.search('invalid opcode'), -1, 'Invalid opcodeerror must be returned');
-    //     }
-
-    //     token.transferFrom(accounts[7], accounts[8], 10000000, { from: accounts[6] });
-    //     var balanceOf7 = await token.balanceOf(accounts[7]);
-    //     assert.equal(balanceOf7.toNumber(), 11000000, "not corect amount");
-    //     var balanceOf8 = await token.balanceOf(accounts[8]);
-    //     assert.equal(balanceOf8.toNumber(), 10000000, "not corect amount");
-
-    //     token.transferFrom(accounts[7], accounts[9], 3000000, { from: accounts[5] });
-    //     balanceOf7 = await token.balanceOf(accounts[7]);
-    //     assert.equal(balanceOf7.toNumber(), 8000000, "not corect amount");
-    //     var balanceOf9 = await token.balanceOf(accounts[9]);
-    //     assert.equal(balanceOf9.toNumber(), 3000000, "not corect amount");
-
-    // });
 });
