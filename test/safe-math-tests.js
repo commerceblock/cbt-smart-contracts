@@ -10,8 +10,10 @@ contract('SafeMath tests', function(accounts) {
 
   it('subtracts correctly', async function() {
 
-    let a = Math.floor(Math.random() * 100);
-    let b = Math.floor(Math.random() * 100);
+    let randomSign = Math.random() < 0.5 ? -1 : 1;
+
+    let a = Math.floor(Math.random() * 100) * randomSign;
+    let b = Math.floor(Math.random() * 100) * randomSign;
     let subtract = await safeMath.subtract(a, b);
     let result = await safeMath.result();
 
@@ -19,8 +21,10 @@ contract('SafeMath tests', function(accounts) {
   })
 
   it('add correctly', async function() {
-    let a = Math.floor(Math.random() * 100);
-    let b = Math.floor(Math.random() * 100);
+    let randomSign = Math.random() < 0.5 ? -1 : 1;
+
+    let a = Math.floor(Math.random() * 100) * randomSign;
+    let b = Math.floor(Math.random() * 100) * randomSign;
     let add = await safeMath.add(a, b);
     let result = await safeMath.result();
 
