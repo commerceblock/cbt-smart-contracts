@@ -1,11 +1,11 @@
-pragma solidity ^0.4.11;
+pragma solidity ^0.4.6;
 
 
 /**
  * @title SafeMath
  * @dev Math operations with safety checks that throw on error
  */
- 
+
 library SafeMath {
 
   function sub(uint256 a, uint256 b) internal constant returns (uint256) {

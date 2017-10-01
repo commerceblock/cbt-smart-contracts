@@ -7,10 +7,23 @@
   },
   "dependencies": {},
   "devDependencies": {
-    "ethereumjs-testrpc": "git://github.com/commerceblock/testrpc.git#29c5115609b909b32774bbaa820c8744db50a74e",
+    "ethereumjs-testrpc": "^4.1.1",
     "ethereumjs-wallet": "git://github.com/commerceblock/ethereumjs-wallet.git#5a597bdf47d4dbe2fa48197e129bd87774dcbb06",
     "truffle": "git://github.com/commerceblock/truffle.git#cddc0107d052d8dcdd310476a96e913dfdc2642c",
     "web3": "git://github.com/commerceblock/web3.js.git#ca1bd7d0cbef4407a153f16f4f1ae289f34f09da",
-    "web3-provider-engine": "git://github.com/commerceblock/provider-engine#7ea8b7c946e504af2b145b702b50caef557818dc"
+    "web3-provider-engine": "git://github.com/commerceblock/provider-engine#7ea8b7c946e504af2b145b702b50caef557818dc",
+    "babel-polyfill": "^6.23.0",
+    "babel-preset-es2015": "^6.18.0",
+    "babel-preset-stage-2": "^6.18.0",
+    "babel-preset-stage-3": "^6.17.0",
+    "babel-register": "^6.23.0",
+    "chai": "^4.0.2",
+    "chai-as-promised": "^7.0.0",
+    "chai-bignumber": "^2.0.0",
+    "coveralls": "^2.13.1",
+    "ethereumjs-util": "^5.1.2",
+    "mocha-lcov-reporter": "^1.3.0",
+    "solidity-coverage": "^0.2.2",
+    "truffle-hdwallet-provider": "0.0.3"
   }
 }

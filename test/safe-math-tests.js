@@ -1,4 +1,4 @@
-const SafeMathMock = artifacts.require('SafeMathMock');
+const SafeMathMock = artifacts.require('./helpers/SafeMathMock');
 
 contract('SafeMath tests', function(accounts) {
 
