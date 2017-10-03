@@ -5,10 +5,9 @@
 > -- Ram Dass
 
 
+### Preface ###
 
-
-
-
+This repository includes all Commerceblock Ethereum smart contracts needed for CBT token sale event.
 **Note run below commands with NodeJS 8.5+, this is needed for native async support**
 
 ### Install dependencies ###
