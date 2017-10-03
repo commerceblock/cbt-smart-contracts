@@ -6,6 +6,7 @@ npm-debug.log
 .serverless
 
 coverage/
+coverage.json
 
 build/
 kms-secrets*.yml

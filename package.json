@@ -3,7 +3,8 @@
   "version": "0.1.0",
   "scripts": {
     "testrpc": "testrpc",
-    "test": "truffle test"
+    "test": "truffle test",
+    "coverage": "solidity-coverage"
   },
   "dependencies": {},
   "devDependencies": {
