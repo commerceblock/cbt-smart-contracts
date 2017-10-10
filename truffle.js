@@ -7,17 +7,6 @@ const WalletSubprovider = require('web3-provider-engine/subproviders/wallet.js')
 const Web3Subprovider = require('web3-provider-engine/subproviders/web3.js');
 const Web3 = require('web3');
 
-// consts
-const PROVIDER_URL = 'https://ropsten.infura.io/hNI5iNGYJ3VAbw3v1cRK';
-const WALLET_HDPATH = "m/44'/60'/0'/0/0";
-
-const hdwallet = hdkey.fromMasterSeed(process.env.ROPSTEN_SEED);
-const wallet = hdwallet.derivePath(WALLET_HDPATH).getWallet();
-const engine = new ProviderEngine();
-engine.addProvider(new WalletSubprovider(wallet, {}));
-engine.addProvider(new Web3Subprovider(new Web3.providers.HttpProvider(PROVIDER_URL)));
-
-engine.start(); // Required by the provider engine.
 
 module.exports = {
   networks: {
@@ -25,11 +14,6 @@ module.exports = {
       host: 'localhost',
       port: 8545,
       network_id: '*' // Match any network id
-    },
-    ropsten: {
-      network_id: 3,    // Official ropsten network id
-      provider: engine, // Use our custom provider
-      from: wallet.getAddressString()     // Use the address we derived
     }
   },
   build: function(options, callback) {
@@ -40,7 +24,9 @@ module.exports = {
 
     const web3 = new Web3(new Web3.providers.HttpProvider('http://localhost:8545'));
     const MyContract = web3.eth.contract(CBToken.abi);
-    const contractData = MyContract.new.getData(company, {data: CBToken.unlinked_binary});
-    fs.writeFile('./byteCode', contractData);
+
+    const contractData = MyContract.getData(company, {data: CBToken.unlinked_binary});
+    fs.writeFile('./CommerceBlockToken.bytecode', contractData);
+    fs.writeFile('./CommerceBlockToken.abi', contractData);
    }
 };
