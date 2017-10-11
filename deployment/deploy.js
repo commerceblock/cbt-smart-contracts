@@ -13,12 +13,6 @@ const deployCBT = require("./deployCBT.js");
 const gas = 3000000;
 const gasPrice = 50000000000;
 
-var importAccount = function(){
-    var privateKey = fs.readFileSync('./privateKey', 'utf8');    
-    var account = accounts.privateKeyToAccount("0x" +privateKey); 
-    return account;
-}
-
 var deploy = function(){
     var command = process.argv[2];
     web3.personal.unlockAccount(web3.eth.accounts[0]);

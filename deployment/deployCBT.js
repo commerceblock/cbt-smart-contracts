@@ -7,7 +7,6 @@ module.exports = {
 
     var CBToken_contract = web3.eth.contract(CBToken.abi);
     var CBToken_byteCode = CBToken.unlinked_binary;
-    // console.log(MultiSigWallet_contract)
     CBToken_contract.new(MultiSigWalletAddress,{
       data: CBToken_byteCode,
       from: deployAccount,

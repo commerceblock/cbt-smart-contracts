@@ -7,7 +7,6 @@
     "coverage": "solidity-coverage"
   },
   "dependencies": {
-    "web3-eth-accounts": "^1.0.0-beta.23"
   },
   "devDependencies": {
     "chai": "git://github.com/commerceblock/chai.git#529d395fa08091af2a02a8398b1144c51ed62178",
@@ -22,6 +21,7 @@
     "truffle": "git://github.com/commerceblock/truffle.git#cddc0107d052d8dcdd310476a96e913dfdc2642c",
     "web3": "^0.20.2",
     "truffle-contract" : "^3.0.0" ,
+    "web3-eth-accounts": "^1.0.0-beta.23",    
     "web3-provider-engine": "git://github.com/commerceblock/provider-engine#7ea8b7c946e504af2b145b702b50caef557818dc"
   }
 }

@@ -11,7 +11,6 @@ module.exports = {
 
     var MultiSigWallet_contract = web3.eth.contract(MultiSigWallet.abi);
     var MultiSigWallet_byteCode = MultiSigWallet.unlinked_binary;
-    // console.log(MultiSigWallet_contract)
     MultiSigWallet_contract.new([owner1,owner2,owner3] ,2 ,{
       data: MultiSigWallet_byteCode,
       from: deployAccount,

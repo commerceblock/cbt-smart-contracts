@@ -11,7 +11,7 @@ smart contract deployment procedure:
  
 4.prepare multisig owners accounts , list the addresses in ~/cbt_smart_contracts/deployment/owners.json
 
-5.deploy multisig multisig
+5.deploy multisig 
   cmd: ~/cbt_smart_contracts/deployment$ node ./deploy Multisig
   
   the script will save the contract address into MultiSigWallet.address
