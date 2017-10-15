@@ -1,12 +1,8 @@
-.DS_Store
+.eslintignore.DS_Store
 node_modules
 npm-debug.log
-
-# serverless zip
-.serverless
 
 coverage/
 coverage.json
 
 build/
-kms-secrets*.yml

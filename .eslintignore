@@ -1,7 +1,8 @@
 .DS_Store
 node_modules
 npm-debug.log
-coverage/
 
-# build
+coverage/
+coverage.json
+
 build/
