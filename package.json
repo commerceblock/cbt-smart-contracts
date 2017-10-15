@@ -7,6 +7,12 @@
     "coverage": "solidity-coverage"
   },
   "dependencies": {
+    "ethereumjs-util": "git://github.com/commerceblock/ethereumjs-util.git#b01a58cbaa6d13e61970d5c9d1f7a9967de6ed7e",
+    "ethereumjs-wallet": "git://github.com/commerceblock/ethereumjs-wallet.git#5a597bdf47d4dbe2fa48197e129bd87774dcbb06",
+    "truffle-contract": "git://github.com:commerceblock/truffle-contract.git#c7fbdb3d39a5fbc5be450e2d444ad40172df44d1",
+    "truffle": "git://github.com/commerceblock/truffle.git#cddc0107d052d8dcdd310476a96e913dfdc2642c",
+    "web3": "git://github.com:commerceblock/web3.js.git#e6af9b08e8c797a166ae12987f2589112666b135",
+    "web3-provider-engine": "git://github.com/commerceblock/provider-engine#7ea8b7c946e504af2b145b702b50caef557818dc"
   },
   "devDependencies": {
     "chai": "git://github.com/commerceblock/chai.git#529d395fa08091af2a02a8398b1144c51ed62178",
@@ -14,13 +20,7 @@
     "chai-bignumber": "git://github.com/commerceblock/chai-bignumber.git#295993bff864350a09da1d26a9adc94c96b07adc",
     "coveralls": "git://github.com/commerceblock/node-coveralls.git#b9032a18bd8d7fba7eaa0924a77e810ec4d0935a",
     "ethereumjs-testrpc": "git://github.com/commerceblock/testrpc.git#f0bab3fa12d3f762bc41c62e74ec4246be197bac",
-    "ethereumjs-util": "git://github.com/commerceblock/ethereumjs-util.git#b01a58cbaa6d13e61970d5c9d1f7a9967de6ed7e",
-    "ethereumjs-wallet": "git://github.com/commerceblock/ethereumjs-wallet.git#5a597bdf47d4dbe2fa48197e129bd87774dcbb06",
     "mocha-lcov-reporter": "git://github.com/commerceblock/mocha-lcov-reporter.git#a6d38a2db85fc40f8a1b534aedee62d34858cbaa",
-    "solidity-coverage": "git://github.com/commerceblock/solidity-coverage.git#dcee2f61e35b42acde9b52d152c2f591c899cf34",
-    "truffle": "git://github.com/commerceblock/truffle.git#cddc0107d052d8dcdd310476a96e913dfdc2642c",
-    "web3": "git://github.com:commerceblock/web3.js.git#e6af9b08e8c797a166ae12987f2589112666b135",
-    "truffle-contract" : "git://github.com:commerceblock/truffle-contract.git#c7fbdb3d39a5fbc5be450e2d444ad40172df44d1",
-    "web3-provider-engine": "git://github.com/commerceblock/provider-engine#7ea8b7c946e504af2b145b702b50caef557818dc"
+    "solidity-coverage": "git://github.com/commerceblock/solidity-coverage.git#dcee2f61e35b42acde9b52d152c2f591c899cf34"
   }
 }
