@@ -4,7 +4,8 @@
   "scripts": {
     "testrpc": "testrpc",
     "test": "truffle test",
-    "coverage": "solidity-coverage"
+    "coverage": "solidity-coverage",
+    "compile": "truffle compile"
   },
   "dependencies": {
   },
